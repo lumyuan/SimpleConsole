@@ -5,7 +5,7 @@
 app/build.gradle
 ```java
 dependencies {
-	implementation 'com.github.lumyuan:SimpleConsole:v0.0.1'
+	implementation 'com.github.lumyuan:SimpleConsole:v0.0.2'
 }
 ```
 
