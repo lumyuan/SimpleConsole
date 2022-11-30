@@ -1,6 +1,5 @@
 package com.lumyuan.consoleobserver
 
-import android.annotation.SuppressLint
 import android.text.Html
 import android.text.Spanned
 import com.lumyuan.consoleobserver.common.Permission
@@ -8,8 +7,6 @@ import com.lumyuan.consoleobserver.observer.LiveData
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -85,13 +82,6 @@ class Console(private val permission: Permission = Permission.SH(), private val 
         }else {
             errorLiveData.setValue(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-<<<<<<< HEAD
-                this.message = "$e\n"
-            })
-            list.add(Logcat().apply {
-                this.type = CONSOLE_TYPE_ERROR
-                this.message = "$e\n"
-=======
                 if (isFullStackTrace) {
                     this.message = e.stackTraceToString() + "\n"
                 } else {
@@ -105,7 +95,6 @@ class Console(private val permission: Permission = Permission.SH(), private val 
                 } else {
                     this.message = "$e\n"
                 }
->>>>>>> 8a8cba17c319fa9e39cd590adc9a1ca3f72ee87d
             })
         }
     }
