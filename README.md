@@ -1,5 +1,5 @@
 # SimpleConsole
- SimpleConsole
+一个简易的控制台程序，支持Process复用以及实时监听日志
 
 ## 引入依赖
 app/build.gradle
