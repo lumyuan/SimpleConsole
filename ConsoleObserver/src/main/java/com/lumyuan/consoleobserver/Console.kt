@@ -15,7 +15,7 @@ import kotlin.collections.ArrayList
 /**
  * 默认无权限
  */
-class Console(private val permission: Permission = Permission.SH()) {
+class Console(private val permission: Permission = Permission.SH(), private val isFullStackTrace: Boolean = false) {
 
     private val CONSOLE_TYPE_SUCCESS = 0
     private val CONSOLE_TYPE_ERROR = 1
@@ -68,20 +68,44 @@ class Console(private val permission: Permission = Permission.SH()) {
         if (e.toString().contains("read interrupted")) {
             errorLiveData.setValue(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = "程序已退出：$e\n"
+                if (isFullStackTrace) {
+                    this.message = "程序已退出：" + e.stackTraceToString() + "\n"
+                } else {
+                    this.message = "程序已退出：$e\n"
+                }
             })
             list.add(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = "程序已退出：$e\n"
+                if (isFullStackTrace) {
+                    this.message = "程序已退出：" + e.stackTraceToString() + "\n"
+                } else {
+                    this.message = "程序已退出：$e\n"
+                }
             })
         }else {
             errorLiveData.setValue(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
+<<<<<<< HEAD
                 this.message = "$e\n"
             })
             list.add(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
                 this.message = "$e\n"
+=======
+                if (isFullStackTrace) {
+                    this.message = e.stackTraceToString() + "\n"
+                } else {
+                    this.message = "$e\n"
+                }
+            })
+            list.add(Logcat().apply {
+                this.type = CONSOLE_TYPE_ERROR
+                if (isFullStackTrace) {
+                    this.message = e.stackTraceToString() + "\n"
+                } else {
+                    this.message = "$e\n"
+                }
+>>>>>>> 8a8cba17c319fa9e39cd590adc9a1ca3f72ee87d
             })
         }
     }

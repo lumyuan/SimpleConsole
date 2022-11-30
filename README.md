@@ -1,11 +1,12 @@
 # SimpleConsole
 一个简易的控制台程序，支持Process复用以及实时监听日志
+<a href="https://github.com/lumyuan/SimpleConsole/blob/main/Demo.apk">下载实示例</a>
 
 ## 引入依赖
 app/build.gradle
 ```java
 dependencies {
-	implementation 'com.github.lumyuan:SimpleConsole:v0.0.1'
+	implementation 'com.github.lumyuan:SimpleConsole:v0.0.2'
 }
 ```
 

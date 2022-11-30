@@ -13,16 +13,11 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.lumyuan.consoleobserver.Console
 import com.lumyuan.consoleobserver.observer.Observer
 import com.lumyuan.simpleconsole.ConsoleApplication.Companion.console
 import com.lumyuan.simpleconsole.databinding.ActivityMainBinding
-import io.github.rosemoe.sora.event.ContentChangeEvent
-import io.github.rosemoe.sora.event.EventReceiver
-import io.github.rosemoe.sora.event.Unsubscribe
 import io.github.rosemoe.sora.langs.textmate.TextMateColorScheme
 import io.github.rosemoe.sora.langs.textmate.TextMateLanguage
 import io.github.rosemoe.sora.langs.textmate.registry.FileProviderRegistry
@@ -31,7 +26,6 @@ import io.github.rosemoe.sora.langs.textmate.registry.ThemeRegistry
 import io.github.rosemoe.sora.langs.textmate.registry.model.ThemeModel
 import io.github.rosemoe.sora.langs.textmate.registry.provider.AssetsFileResolver
 import io.github.rosemoe.sora.widget.CodeEditor
-import io.github.rosemoe.sora.widget.subscribeEvent
 import org.eclipse.tm4e.core.registry.IThemeSource
 
 class MainActivity : AppCompatActivity(), OnClickListener {
