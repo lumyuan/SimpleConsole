@@ -109,7 +109,13 @@ class Console(private val permission: Permission = Permission.SH()) {
                 }
             }catch (e: Exception){
                 e.printStackTrace()
-                catchThrowable(e)
+                if (type == CONSOLE_TYPE_ERROR){
+                    catchThrowable(e)
+                }else {
+                    if (!e.toString().contains("read interrupted")){
+                        catchThrowable(e)
+                    }
+                }
             }
         }.start()
     }
