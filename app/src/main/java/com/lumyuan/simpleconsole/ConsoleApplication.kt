@@ -11,9 +11,10 @@ class ConsoleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        console = Console()
+        //初始化控制台，控制台默认不打印完整错误调用栈，这里手动设置为true
+        console = Console(isFullStackTrace = true)
         //直接获取SU权限
-        //console = Console(Permission.SU())
+        //console = Console(permission = Permission.SU(), isFullStackTrace = true)
     }
 
 }
