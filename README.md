@@ -1,7 +1,7 @@
 # SimpleConsole
  SimpleConsole
 
-### 引入依赖
+## 引入依赖
 app/build.gradle
 ```java
 dependencies {
@@ -46,4 +46,22 @@ console.errorLiveData.observe(object : Observer<Console.Logcat>{
     }
 })
 ```
+4. 其他公开函数
+```kotlin
+//重启控制台
+console.restart()
+//销毁控制台
+console.destroy()
+//清空日志
+console.clear()
+//获取所有日志
+console.getLogSpanned()
+......
+```
+## 其他
+本项目推荐Kotlin项目导入使用，克隆本项目查看更多推荐写法。Java项目导入本项目请一并导入Kotlin核心依赖
+
+# 免责声明
+本项目仅用于学习与交流，请勿使用或引用本项目进行任何违法犯罪活动！
+
 [![](https://jitpack.io/v/lumyuan/SimpleConsole.svg)](https://jitpack.io/#lumyuan/SimpleConsole)
