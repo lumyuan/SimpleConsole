@@ -92,9 +92,7 @@
                 android:id="@+id/input"
                 android:gravity="top"
                 android:maxHeight="100dp"
-                android:layout_marginTop="5dp"
-                android:importantForAutofill="no"
-                android:inputType="text" />
+                android:layout_marginTop="5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"

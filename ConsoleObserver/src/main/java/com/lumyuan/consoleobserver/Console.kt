@@ -77,11 +77,11 @@ class Console(private val permission: Permission = Permission.SH()) {
         }else {
             errorLiveData.setValue(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = "${e.toString()}\n"
+                this.message = "$e\n"
             })
             list.add(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = "${e.toString()}\n"
+                this.message = "$e\n"
             })
         }
     }
@@ -91,6 +91,11 @@ class Console(private val permission: Permission = Permission.SH()) {
             var line: String?
             try {
                 while (run { line = reader?.readLine(); line } != null){
+                    try{
+                        Thread.sleep(10)
+                    }catch (e: Exception){
+                        e.printStackTrace()
+                    }
                     if (type == CONSOLE_TYPE_SUCCESS){
                         successLiveData.setValue(Logcat().apply {
                             this.type = type
@@ -205,9 +210,6 @@ class Console(private val permission: Permission = Permission.SH()) {
         return Html.fromHtml(getText(logcat?.type, logcat?.message))
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-
     /**
      * 获取日志
      */
@@ -239,6 +241,10 @@ class Console(private val permission: Permission = Permission.SH()) {
         initStream()
     }
 
+    /**
+     * 获取控制台权限
+     * @return 控制台权限
+     */
     fun isSu(): Boolean {
         return isSu
     }
