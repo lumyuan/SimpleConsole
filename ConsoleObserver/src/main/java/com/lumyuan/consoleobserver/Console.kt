@@ -5,7 +5,6 @@ import android.text.Html
 import android.text.Spanned
 import com.lumyuan.consoleobserver.common.Permission
 import com.lumyuan.consoleobserver.observer.LiveData
-import com.lumyuan.consoleobserver.observer.Observer
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
@@ -18,10 +17,11 @@ import kotlin.collections.ArrayList
  */
 class Console(private val permission: Permission = Permission.SH()) {
 
-    val CONSOLE_TYPE_SUCCESS = 0
-    val CONSOLE_TYPE_ERROR = 1
+    private val CONSOLE_TYPE_SUCCESS = 0
+    private val CONSOLE_TYPE_ERROR = 1
 
     private val list: ArrayList<Logcat> = ArrayList()
+    private var isSu = permission is Permission.SU
 
     private var successReader: BufferedReader? = null
     private var errorReader: BufferedReader? = null
@@ -68,20 +68,20 @@ class Console(private val permission: Permission = Permission.SH()) {
         if (e.toString().contains("read interrupted")) {
             errorLiveData.setValue(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = "程序已退出：$e"
+                this.message = "程序已退出：$e\n"
             })
             list.add(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = "程序已退出：$e"
+                this.message = "程序已退出：$e\n"
             })
         }else {
             errorLiveData.setValue(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = e.toString()
+                this.message = "${e.toString()}\n"
             })
             list.add(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
-                this.message = e.toString()
+                this.message = "${e.toString()}\n"
             })
         }
     }
@@ -94,17 +94,17 @@ class Console(private val permission: Permission = Permission.SH()) {
                     if (type == CONSOLE_TYPE_SUCCESS){
                         successLiveData.setValue(Logcat().apply {
                             this.type = type
-                            this.message = line
+                            this.message = "$line\n"
                         })
                     }else {
                         errorLiveData.setValue(Logcat().apply {
                             this.type = type
-                            this.message = line
+                            this.message = "$line\n"
                         })
                     }
                     list.add(Logcat().apply {
                         this.type = type
-                        this.message = line
+                        this.message = "$line\n"
                     })
                 }
             }catch (e: Exception){
@@ -114,25 +114,53 @@ class Console(private val permission: Permission = Permission.SH()) {
         }.start()
     }
 
-    fun execString(cmd: String){
-        try {
-            writer?.writeBytes(cmd)
-            writer?.writeBytes("\n")
-            writer?.flush()
-        }catch (e: Exception){
-            e.printStackTrace()
-            catchThrowable(e)
+    private fun isSu(cmd: String){
+        val split = cmd.split("\n")
+        for (it in split){
+            if (it.trim() == "su" || it.trim().startsWith("su") || it.contains("su ")){
+                this.isSu = true
+                break
+            }
+        }
+        for (it in split){
+            if (it.trim() == "exit" || it.trim().startsWith("exit") || it.contains(" exit")){
+                this.isSu = false
+                break
+            }
         }
     }
 
-    fun execBytes(cmd: ByteArray){
-        try {
-            writer?.write(cmd)
-            writer?.write("\n".toByteArray())
+    /**
+     * @return is running
+     */
+    fun execString(cmd: String): Boolean{
+        return try {
+            writer?.writeBytes(cmd)
+            writer?.writeBytes("\n")
             writer?.flush()
+            isSu(cmd)
+            true
         }catch (e: Exception){
             e.printStackTrace()
             catchThrowable(e)
+            false
+        }
+    }
+
+    /**
+     * @return is running
+     */
+    fun execBytes(cmd: ByteArray): Boolean{
+        return try {
+            writer?.write(cmd)
+            writer?.write("\n".toByteArray())
+            writer?.flush()
+            isSu(String(cmd))
+            true
+        }catch (e: Exception){
+            e.printStackTrace()
+            catchThrowable(e)
+            false
         }
     }
 
@@ -140,6 +168,7 @@ class Console(private val permission: Permission = Permission.SH()) {
      * 关闭控制台，不会清除日志
      */
     fun destroy(){
+        isSu = false
         try {
             process.destroy()
         }catch (e: Exception){
@@ -202,6 +231,10 @@ class Console(private val permission: Permission = Permission.SH()) {
     fun restart(){
         destroy()
         initStream()
+    }
+
+    fun isSu(): Boolean {
+        return isSu
     }
 
     class Logcat{

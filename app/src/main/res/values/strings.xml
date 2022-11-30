@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SimpleConsole</string>
+    <string name="restart">重启控制台</string>
+    <string name="destroy">销毁控制台</string>
+    <string name="get_log">获取全部日志</string>
+    <string name="clear_log">清空日志</string>
+    <string name="hint">输入指令后点击运行，可输入多行</string>
+    <string name="run">运行</string>
 </resources>
