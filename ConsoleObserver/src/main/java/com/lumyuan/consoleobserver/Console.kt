@@ -6,13 +6,14 @@ import com.lumyuan.consoleobserver.common.Permission
 import com.lumyuan.consoleobserver.observer.LiveData
 import java.io.BufferedReader
 import java.io.DataOutputStream
+import java.io.IOException
 import java.io.InputStreamReader
 import kotlin.collections.ArrayList
 
 /**
  * 默认无权限
  */
-class Console(private val permission: Permission = Permission.SH(), private val isFullStackTrace: Boolean = false) {
+class Console(private val permission: Permission = Permission.SH(), private var isFullStackTrace: Boolean = false) {
 
     private val CONSOLE_TYPE_SUCCESS = 0
     private val CONSOLE_TYPE_ERROR = 1
@@ -62,7 +63,7 @@ class Console(private val permission: Permission = Permission.SH(), private val 
     }
 
     private fun catchThrowable(e: Throwable){
-        if (e.toString().contains("read interrupted")) {
+        if (e.toString().contains("read interrupted") || e.toString().contains("Process is closed.")) {
             errorLiveData.setValue(Logcat().apply {
                 this.type = CONSOLE_TYPE_ERROR
                 if (isFullStackTrace) {
@@ -105,7 +106,7 @@ class Console(private val permission: Permission = Permission.SH(), private val 
             try {
                 while (run { line = reader?.readLine(); line } != null){
                     try{
-                        Thread.sleep(10)
+                        Thread.sleep(5)
                     }catch (e: Exception){
                         e.printStackTrace()
                     }
@@ -147,9 +148,16 @@ class Console(private val permission: Permission = Permission.SH(), private val 
             }
         }
         for (it in split){
-            if (it.trim() == "exit" || it.trim().startsWith("exit") || it.contains(" exit")){
-                this.isSu = false
-                break
+            if (this.isSu){
+                if (it.trim() == "exit" || it.trim().startsWith("exit") || it.contains(" exit")){
+                    this.isSu = false
+                    break
+                }
+            }else {
+                if (it.trim() == "exit" || it.trim().startsWith("exit") || it.contains(" exit")){
+                    catchThrowable(IOException("Process is closed."))
+                    break
+                }
             }
         }
     }
@@ -260,6 +268,14 @@ class Console(private val permission: Permission = Permission.SH(), private val 
      */
     fun isSu(): Boolean {
         return isSu
+    }
+
+    fun isFullStackTrace(bool: Boolean){
+        this.isFullStackTrace = bool
+    }
+
+    fun isFullStackTrace(): Boolean {
+        return this.isFullStackTrace
     }
 
     class Logcat{

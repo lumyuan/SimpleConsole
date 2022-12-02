@@ -10,9 +10,9 @@ android {
     defaultConfig {
         applicationId "com.lumyuan.simpleconsole"
         minSdk 23
-        targetSdk 33
-        versionCode 3
-        versionName "0.0.2"
+        targetSdk 28
+        versionCode 4
+        versionName "0.0.3"
 
     }
 
@@ -45,13 +45,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-service:2.5.1'
 
-    //MD3 Theme
-    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
-    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha15")
-
     //sora-editor
     implementation 'io.github.Rosemoe.sora-editor:editor:0.18.1'
     implementation 'io.github.Rosemoe.sora-editor:language-textmate:0.18.1'
+
+    //MD3 Theme
+    implementation("androidx.compose.material3:material3:1.0.0-alpha15")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha15")
 
     //全面屏适配
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'

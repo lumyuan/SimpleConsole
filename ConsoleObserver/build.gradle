@@ -9,7 +9,8 @@ android {
 
     defaultConfig {
         minSdk 23
-        targetSdk 33
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk 28
 
         consumerProguardFiles "consumer-rules.pro"
     }
